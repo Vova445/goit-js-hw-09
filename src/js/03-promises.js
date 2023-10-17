@@ -1,19 +1,19 @@
 import Notiflix from 'notiflix';
 
-const elements = {
-  delay: document.querySelector('input[name=delay]'),
-  step: document.querySelector('input[name=step]'),
-  amount: document.querySelector('input[name=amount]'),
-  btn: document.querySelector('button[type=submit]'),
+const formElements = {
+  delayInput: document.querySelector('input[name=delay]'),
+  stepInput: document.querySelector('input[name=step]'),
+  amountInput: document.querySelector('input[name=amount]'),
+  submitButton: document.querySelector('button[type=submit]'),
   form: document.querySelector('.form'),
 };
 
-elements.form.addEventListener('submit', (evt) => {
+formElements.form.addEventListener('submit', (evt) => {
   evt.preventDefault();
 
-  const firstDelay = Number(elements.delay.value);
-  const step = Number(elements.step.value);
-  const amount = Number(elements.amount.value);
+  const firstDelay = Number(formElements.delayInput.value);
+  const step = Number(formElements.stepInput.value);
+  const amount = Number(formElements.amountInput.value);
 
   const promises = [];
 
@@ -32,7 +32,7 @@ elements.form.addEventListener('submit', (evt) => {
         fulfilledPromises.push({ position, delay });
       })
       .catch(({ position, delay }) => {
-        Notiflix.Notify.warning(`❌ Rejected promise ${position} in ${delay}ms`);
+        Notiflix.Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
         rejectedPromises.push({ position, delay });
       });
 
@@ -41,7 +41,7 @@ elements.form.addEventListener('submit', (evt) => {
 
   Promise.all(promises)
     .then(() => {
-      elements.form.reset();
+      formElements.form.reset();
     })
     .catch((error) => {
       console.error(error);
